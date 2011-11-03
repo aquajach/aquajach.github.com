@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Jack comes to code]]></title>
+  <link href="http://aquajach.github.com/atom.xml" rel="self"/>
+  <link href="http://aquajach.github.com/"/>
+  <updated>2011-11-03T18:03:51+08:00</updated>
+  <id>http://aquajach.github.com/</id>
+  <author>
+    <name><![CDATA[Jack S Y Chen (@aquajach)]]></name>
+    <email><![CDATA[aquajach@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Hello Octopress]]></title>
+    <link href="http://aquajach.github.com/blog/2011/11/03/hello-octopress/"/>
+    <updated>2011-11-03T16:33:00+08:00</updated>
+    <id>http://aquajach.github.com/blog/2011/11/03/hello-octopress</id>
+    <content type="html"><![CDATA[<p>Octopress is another creature after github&#8217;s Octocat that speeds developers&#8217; productivity, but in a different field, blogging.
+The same thing is both are awesome and&#8230;having 4 times more legs as we do.</p>
+
+<figure class='code'><figcaption><span>Discover both creatures</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Octopress</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">is_extinct?</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">first</span> <span class="p">?</span> <span class="kp">true</span> <span class="p">:</span> <span class="kp">false</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Octocat</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">count</span>
+</span><span class='line'>    <span class="mi">1</span> <span class="c1">#only can be found from github but nowhere else</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+</feed>

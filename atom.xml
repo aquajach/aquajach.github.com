@@ -4,7 +4,7 @@
   <title><![CDATA[Jack comes to code]]></title>
   <link href="http://aquajach.github.com/atom.xml" rel="self"/>
   <link href="http://aquajach.github.com/"/>
-  <updated>2011-11-03T18:03:51+08:00</updated>
+  <updated>2012-02-22T18:00:57+08:00</updated>
   <id>http://aquajach.github.com/</id>
   <author>
     <name><![CDATA[Jack S Y Chen (@aquajach)]]></name>
@@ -12,6 +12,155 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Play Around Time Range in Ruby on Rails]]></title>
+    <link href="http://aquajach.github.com/blog/2012/02/22/play-around-time-range-in-ruby-on-rails/"/>
+    <updated>2012-02-22T17:03:00+08:00</updated>
+    <id>http://aquajach.github.com/blog/2012/02/22/play-around-time-range-in-ruby-on-rails</id>
+    <content type="html"><![CDATA[<p>Recently in Ruby 1.9.2, came across lots of confusing definitions about Time, DateTime, TimeWithZone&#8230; Finally the point taking me to remove hands from keyboards and to think
+about and clarify them was the &#8216;INFINITE&#8217; warning:</p>
+
+<figure class='code'><figcaption><span>Time#succ warning</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>lib/active_support/time_with_zone.rb:327: warning: Time#succ is obsolete; use <span class="nb">time</span> + 1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This warning keeps being throwing and your implement is stuck on somewhere.</p>
+
+<p>In fact it has nothing to do with the warning itself or the succ method deprecation, but the usage of how to get a range of a time period. Some examples:</p>
+
+<figure class='code'><figcaption><span>Time Range Examples</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">days</span><span class="o">.</span><span class="n">ago</span> <span class="o">.</span><span class="n">.</span> <span class="no">DateTime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span> <span class="c1"># =&gt; Tue, 21 Feb 2012 09:29:12 UTC +00:00..2012-02-22 17:29:12 +0800</span>
+</span><span class='line'><span class="mi">1</span><span class="o">.</span><span class="n">days</span><span class="o">.</span><span class="n">ago</span><span class="o">.</span><span class="n">class</span> <span class="c1"># =&gt; ActiveSupport::TimeWithZone</span>
+</span><span class='line'><span class="no">DateTime</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">class</span> <span class="c1"># =&gt; Time</span>
+</span><span class='line'><span class="p">(</span><span class="no">DateTime</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="mi">1</span><span class="o">.</span><span class="n">day</span> <span class="o">.</span><span class="n">.</span> <span class="no">DateTime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span> <span class="c1"># =&gt; 2012-02-21 17:31:25 +0800..2012-02-22 17:31:25 +0800</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">days</span><span class="o">.</span><span class="n">ago</span> <span class="o">.</span><span class="n">.</span> <span class="no">DateTime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span> <span class="c1"># =&gt; *Infinite warnings as above</span>
+</span><span class='line'><span class="p">(</span><span class="no">DateTime</span><span class="o">.</span><span class="n">now</span> <span class="o">-</span> <span class="mi">1</span><span class="o">.</span><span class="n">day</span> <span class="o">.</span><span class="n">.</span> <span class="no">DateTime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span> <span class="c1"># =&gt; [Tue, 21 Feb 2012 17:33:14 +0800, Wed, 22 Feb 2012 17:33:14 +0800]</span>
+</span><span class='line'><span class="p">(</span><span class="mi">10</span><span class="o">.</span><span class="n">seconds</span><span class="o">.</span><span class="n">ago</span> <span class="o">.</span><span class="n">.</span> <span class="no">DateTime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">to_a</span> <span class="c1"># =&gt; Not infinite but 11 warnings as above</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here figures out the problem, to count on a range in time-like formats, for ActiveSupport::TimeWithZone, it counts seconds by seconds, while DateTime counts by day.</p>
+
+<p>Furthermore, if the task is to check if a time is within a time range, you could use include? or cover? in Range class, but they are not always the same:</p>
+
+<figure class='code'><figcaption><span>Task: Check within a time range</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="mi">10</span><span class="o">.</span><span class="n">seconds</span><span class="o">.</span><span class="n">ago</span><span class="o">.</span><span class="n">.</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="n">second</span><span class="p">)</span> <span class="c1"># =&gt; 11 warnings as above</span>
+</span><span class='line'><span class="p">(</span><span class="mi">10</span><span class="o">.</span><span class="n">seconds</span><span class="o">.</span><span class="n">ago</span><span class="o">.</span><span class="n">.</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">cove?</span><span class="p">(</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="n">second</span><span class="p">)</span> <span class="c1"># =&gt; true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The reason is that include? will convert numerical (including ActiveSupport::TimeWithZone) parameters into integers, while cover? does not. Here are their source code:</p>
+
+<figure class='code'><figcaption><span>Source code of Range#inlcude?</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="k">static</span> <span class="n">VALUE</span>
+</span><span class='line'><span class="nf">range_include</span><span class="p">(</span><span class="n">VALUE</span> <span class="n">range</span><span class="p">,</span> <span class="n">VALUE</span> <span class="n">val</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">VALUE</span> <span class="n">beg</span> <span class="o">=</span> <span class="n">RANGE_BEG</span><span class="p">(</span><span class="n">range</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">VALUE</span> <span class="n">end</span> <span class="o">=</span> <span class="n">RANGE_END</span><span class="p">(</span><span class="n">range</span><span class="p">);</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">nv</span> <span class="o">=</span> <span class="n">FIXNUM_P</span><span class="p">(</span><span class="n">beg</span><span class="p">)</span> <span class="o">||</span> <span class="n">FIXNUM_P</span><span class="p">(</span><span class="n">end</span><span class="p">)</span> <span class="o">||</span>
+</span><span class='line'>             <span class="n">rb_obj_is_kind_of</span><span class="p">(</span><span class="n">beg</span><span class="p">,</span> <span class="n">rb_cNumeric</span><span class="p">)</span> <span class="o">||</span>
+</span><span class='line'>             <span class="n">rb_obj_is_kind_of</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">rb_cNumeric</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">nv</span> <span class="o">||</span>
+</span><span class='line'>        <span class="o">!</span><span class="n">NIL_P</span><span class="p">(</span><span class="n">rb_check_to_integer</span><span class="p">(</span><span class="n">beg</span><span class="p">,</span> <span class="s">&quot;to_int&quot;</span><span class="p">))</span> <span class="o">||</span>
+</span><span class='line'>        <span class="o">!</span><span class="n">NIL_P</span><span class="p">(</span><span class="n">rb_check_to_integer</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="s">&quot;to_int&quot;</span><span class="p">)))</span> <span class="p">{</span>    <span class="cm">/* Where to integer conversion happens; */</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">r_le</span><span class="p">(</span><span class="n">beg</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">EXCL</span><span class="p">(</span><span class="n">range</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>                <span class="k">if</span> <span class="p">(</span><span class="n">r_lt</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
+</span><span class='line'>                    <span class="k">return</span> <span class="n">Qtrue</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>            <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>                <span class="k">if</span> <span class="p">(</span><span class="n">r_le</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
+</span><span class='line'>                    <span class="k">return</span> <span class="n">Qtrue</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">Qfalse</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="p">...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Source code of Range#cover?</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="k">static</span> <span class="n">VALUE</span>
+</span><span class='line'><span class="nf">range_cover</span><span class="p">(</span><span class="n">VALUE</span> <span class="n">range</span><span class="p">,</span> <span class="n">VALUE</span> <span class="n">val</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">VALUE</span> <span class="n">beg</span><span class="p">,</span> <span class="n">end</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">beg</span> <span class="o">=</span> <span class="n">RANGE_BEG</span><span class="p">(</span><span class="n">range</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">end</span> <span class="o">=</span> <span class="n">RANGE_END</span><span class="p">(</span><span class="n">range</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">r_le</span><span class="p">(</span><span class="n">beg</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">EXCL</span><span class="p">(</span><span class="n">range</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">r_lt</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
+</span><span class='line'>                <span class="k">return</span> <span class="n">Qtrue</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">r_le</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
+</span><span class='line'>                <span class="k">return</span> <span class="n">Qtrue</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">Qfalse</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hello Octopress]]></title>

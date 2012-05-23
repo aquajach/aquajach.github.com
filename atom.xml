@@ -4,7 +4,7 @@
   <title><![CDATA[Jack comes to code]]></title>
   <link href="http://aquajach.github.com/atom.xml" rel="self"/>
   <link href="http://aquajach.github.com/"/>
-  <updated>2012-05-02T14:39:44+08:00</updated>
+  <updated>2012-05-23T22:58:48+08:00</updated>
   <id>http://aquajach.github.com/</id>
   <author>
     <name><![CDATA[Jack S Y Chen (@aquajach)]]></name>
@@ -12,6 +12,69 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Coming back from Singapore Red Dot Ruby Conf]]></title>
+    <link href="http://aquajach.github.com/blog/2012/05/20/singapore-red-dot-ruby-conf-gui-lai/"/>
+    <updated>2012-05-20T19:54:00+08:00</updated>
+    <id>http://aquajach.github.com/blog/2012/05/20/singapore-red-dot-ruby-conf-gui-lai</id>
+    <content type="html"><![CDATA[<p><img src="http://aquajach.github.com/images/IMG_0492.jpg" width="390" height="298" title="NUS Culture Center #1" >
+<img src="http://aquajach.github.com/images/IMG_0471.jpg" width="390" height="298" title="NUS Culture Center #2" ></p>
+
+<p>去年因为工作的原因没能参加新加坡第一届的rubyconf, 今年巧合的因为工作的原因(公司资助所有人都报名参加)有幸参加. 今年还是叫Red Dot(不知为何), 还是有Andy Croll组织.</p>
+
+<p>由于今年组织方有了一年的大会经验, 可圈可点的地方真是不少, 于是趁还有印象跟去年的Taiwan Rubyconf做了个比较:</p>
+
+<ul>
+<li><strong>讲者水平</strong> (Red Dot 胜)</li>
+</ul>
+
+
+<p>Red Dot嘉宾的份量明显比上年增强不少, 有来自Google, Github, Heroku的, 还有Rails Core Team的<a href="http://www.twitter.com/nzkoz">@nzkoz</a>. 而且几乎所有的讲者都很乐意跟任何人交谈, 也不吝啬给纪念品Github的<a href="http://twitter.com/holman">@holman</a>. 虽然有些talk在之前的某些ronf上也有提过, 但是讲者们还都是很负责任的加入新的内容或加以修改. 不过缺点是或许因为如此, 很多小排公司的有份量的讲者没有能够入围.</p>
+
+<ul>
+<li><strong>与会者水平</strong> (Red Dot 胜)</li>
+</ul>
+
+
+<p>说实话, 不能确定所有的听众的水平如何, 但是交谈下来发现很多人不比台上的讲者差, 而且更加多元化, 本地的听众几乎不到3成.</p>
+
+<ul>
+<li><strong>会外活动安排</strong> (Red Dot胜)</li>
+</ul>
+
+
+<p>这次Speakers Meeting安排了在大会之前, 而在最后一天的晚上, 在市中心有个Post Conference Party, 而且赞助商给每人免费提供两杯酒水, 让大家都多了一个理由再聚一聚.</p>
+
+<ul>
+<li><strong>会议场所设施安排</strong> (平手)</li>
+</ul>
+
+
+<p>Red Dot的优点是会议在新加坡国立大学的文化中心举行, 会议室的大小刚好合适. 最令我高兴的一点是, 有点儿像听音乐剧, 所有人都可以在2楼, 甚至3楼的地方俯瞰讲台, 有种想VIP Seat的感觉. 但是缺点是绝大多数座位比较狭窄, 而且没有Taiwan Rubyconf上那样大家都一个桌台. 另外也没有准备给台下发言的话筒, 这点Taiwan的中央研究院要好很多. 两者都可以改善的是最好把会议地点不要安排的那么远, 所有人都要为来去伤脑经.</p>
+
+<ul>
+<li><strong>会议饮食安排</strong> (平手)</li>
+</ul>
+
+
+<p>Red Dot 虽然没有提供早餐(可能估计很多讲者都会住酒店), 但是提供的午餐和饮品在数量上和质量上都占优.</p>
+
+<p>看起来, 这次Red Dot Rubyconf要优胜不少, 毕竟头几个要素才最重要. 但是代价是几乎4倍的票价, 即使Early-Bird Price也是3倍左右. 不能说这样一个高水平的Conf就使我的Ruby水平突飞猛进, 因为:</p>
+
+<p>1.不是所有的讲题和内容都是&#8221;稀有的&#8221;. 很多讲者讲的东西, 台下精通的人不在少数, 甚至研究更深的都有</p>
+
+<p>2.不是所有的讲题都涉及Ruby或者Rails. 还是想很多有关运作性能, 前端开发和架构分析的内容</p>
+
+<p>3.最重要的一点, 我始终认为一个听众通过Conference可能会有所启发, 但是更大成长可能会在于在听完talk之后如何去做, 可以是尝试新的工具, 可以是检讨现有的系统, 也可以是专研任何新的插件.</p>
+
+<p>所以我认为<strong><strong>一个成功的conference不应该是一组Presentation, 所有成员, 组织者, 讲者和听众的互动以及之后的延伸才是最重要的</strong></strong>.</p>
+
+<p>快要下飞机了, 下一篇可能会讲讲Ruby Community.</p>
+
+<p><img src="http://aquajach.github.com/images/IMG_0493.jpg" title="Red Dot Ruby Conf" ></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Play Around Time Range in Ruby on Rails]]></title>

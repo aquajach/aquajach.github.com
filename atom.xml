@@ -4,7 +4,7 @@
   <title><![CDATA[Jack comes to code]]></title>
   <link href="http://aquajach.github.com/atom.xml" rel="self"/>
   <link href="http://aquajach.github.com/"/>
-  <updated>2012-05-31T15:07:20+08:00</updated>
+  <updated>2012-05-31T16:57:50+08:00</updated>
   <id>http://aquajach.github.com/</id>
   <author>
     <name><![CDATA[Jack S Y Chen (@aquajach)]]></name>
@@ -12,6 +12,66 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Why we use Ruby or Rails?]]></title>
+    <link href="http://aquajach.github.com/blog/2012/05/31/why-we-use-ruby-or-rails/"/>
+    <updated>2012-05-31T15:24:00+08:00</updated>
+    <id>http://aquajach.github.com/blog/2012/05/31/why-we-use-ruby-or-rails</id>
+    <content type="html"><![CDATA[<p>Having been using Ruby and Rails for a few years, recently I find it becomes trendy, even if in Hong Kong, a commercial and finanacial city more people want to build their web application in such a *new language.</p>
+
+<p>When being asked why they like Ruby or Rails, their answers among:</p>
+
+<ul>
+<li>It&#8217;s preferred by lots of foreign developers</li>
+<li>Some professors said it is the trend of web development in the future</li>
+<li>PHP is pretty boring</li>
+<li>Twitter&#8217;s built in RoR</li>
+<li>Some of my developers in the team like to try it</li>
+<li>It is cooler</li>
+</ul>
+
+
+<p>Yes, it is cooler to me, but I don&#8217;t think these reasons persuade many people move from another programming lanuage to Ruby. Here I give why I still stick to this language:</p>
+
+<ul>
+<li><strong>Ruby Community</strong></li>
+</ul>
+
+
+<p>I haven&#8217;t seen any programming community as social as Ruby&#8217;s. Github is the most well known project collabration and open source hosting site with a slogan as Social Coding. *Social means developers feel happy to share what they have, to listen what is interesting and even to contribute what they can to make the earth run faster. A stats of lanuages in Github, in which Ruby is the socialest server-side language (guessing every web app needs JavaScript).</p>
+
+<p><img src="http://aquajach.github.com/images/languages_in_github.png" title="Lanuages in Github" ></p>
+
+<p>Every year there are different scale Ruby Conferences all around of world and uncountable meetups. Many developers pay themselves for debating with others, giving speaches and helping promote Ruby and its community. Ruby or Rails itself is not faultless or the best of all and even <a href="https://gist.github.com/1978249">can be hacked at some point</a>, but its followers believe things get better everyday as long as the community is well there.</p>
+
+<ul>
+<li><strong>Open Source</strong></li>
+</ul>
+
+
+<p>Because of the community is strong, there&#8217;re many open source gems or plugins are there. Java programmers probably find Rails projects don&#8217;t need much coding, as all of modules are free to download.</p>
+
+<p>A few year ago, I was in a dinner but it finally turned to be a debate between a Microsoft fan and a Ruby developer. The former working in a governmental institution holded Microsoft or IBM gives full support, which is reliable to large scale projects. While the Ruby guy said giving a google or shouting about an error will fix your problems faster.</p>
+
+<p>I would stand with Microsoft if it were 7 years ago, but now in the age of Internet, which features/functions you want to build or which errors you come across some people might post them somewhere as public and searchable resource. We definitely wants technical support from all developers on the earth rather than from a single company making you spend a thousand bucks per month.</p>
+
+<ul>
+<li><strong>Launage itself</strong></li>
+</ul>
+
+
+<p>Here I&#8217;d like to save thousands of words, as there are many posts give much praise to it.</p>
+
+<p><a href="http://www.linuxjournal.com/article/5915">http://www.linuxjournal.com/article/5915</a> <a href="https://www.google.com.hk/search?q=ruby+advantages&amp;oq=ruby+advantages">See More</a></p>
+
+<p>People are saying Ruby is good, but everyone involved needs to know why.</p>
+
+<p>Still remmeber in the last Red Dot Ruby Conf, <a href="http://www.twitter.com/nzkoz">@nzkoz</a> (one of Rails core team) complained about how many pull requests and emails he sees every morning, which makes him feel like this:</p>
+
+<p><img src="http://aquajach.github.com/images/ruby_community.jpg" title="Rubiests are coming to burn my house everyday" ></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Coming back from Singapore Red Dot Ruby Conf]]></title>

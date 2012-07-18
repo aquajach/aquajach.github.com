@@ -4,7 +4,7 @@
   <title><![CDATA[Jack comes to code]]></title>
   <link href="http://aquajach.github.com/atom.xml" rel="self"/>
   <link href="http://aquajach.github.com/"/>
-  <updated>2012-05-31T16:57:50+08:00</updated>
+  <updated>2012-07-18T15:41:05+08:00</updated>
   <id>http://aquajach.github.com/</id>
   <author>
     <name><![CDATA[Jack S Y Chen (@aquajach)]]></name>
@@ -12,6 +12,63 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rspec in Turbo Mode: Setup Spork + Factory Girl + Rspec]]></title>
+    <link href="http://aquajach.github.com/blog/2012/07/18/rspec-in-turbo-mode-setup-spork-plus-factory-girl-plus-rspec/"/>
+    <updated>2012-07-18T14:54:00+08:00</updated>
+    <id>http://aquajach.github.com/blog/2012/07/18/rspec-in-turbo-mode-setup-spork-plus-factory-girl-plus-rspec</id>
+    <content type="html"><![CDATA[<p>Rspec is normally preferrable against Rails&#8217; <a href="http://guides.rubyonrails.org/testing.html">Test::Unit</a>. However, developers
+can get anxious easily when running slow Rspec hundreds of time every day. It is slow because every time you start a test, even if there&#8217;s only one file,
+Rspec loans all files. Instead, Sport forks a copy of your Rails server on DRb server in the background, when you kick off your testing.</p>
+
+<p>The basic installation and configuration can&#8217;t be simpler with the instruction from its <a href="https://github.com/sporkrb/spork/">README</a>. However, people still
+find problems afterwards:</p>
+
+<ul>
+<li><a href="https://github.com/sporkrb/spork/issues/37">Model files are not reloaded once some changes are made</a></li>
+</ul>
+
+
+<p>First, make sure you have turned off cache class in environment conf:</p>
+
+<figure class='code'><figcaption><span>config/environments/test.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">cache_classes</span> <span class="o">=</span> <span class="kp">false</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Second, clean dependencies at the end of Spork.prefork block every time you start Spork:</p>
+
+<figure class='code'><figcaption><span>spec/spec_helper.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Spork</span><span class="o">.</span><span class="n">prefork</span> <span class="k">do</span>
+</span><span class='line'>  <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Dependencies</span><span class="o">.</span><span class="n">clear</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><a href="https://groups.google.com/forum/?fromgroups#!topic/factory_girl/IZqIy1pvdZ0">Factory Girl&#8217;s fixture data are not reloaded</a></li>
+</ul>
+
+
+<p>Simply ask FactoryGirl to reload new fixture every time you run test</p>
+
+<figure class='code'><figcaption><span>spec/spec_helper.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Spork</span><span class="o">.</span><span class="n">each_run</span> <span class="k">do</span>
+</span><span class='line'>  <span class="c1"># This code will be run each time you run your specs.</span>
+</span><span class='line'>  <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">reload</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here we go! Spork also supports different Ruby frameworks and IDEs.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Why we use Ruby or Rails?]]></title>

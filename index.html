@@ -9,8 +9,7 @@
   <meta name="author" content="Jack S Y Chen (@aquajach)">
 
   
-  <meta name="description" content="Rspec is normally preferrable against Rails&#8217; Test::Unit. However, developers
-can get anxious easily when running slow Rspec hundreds of time &hellip;">
+  <meta name="description" content="Version upgrading becomes a continuous plain for developers. Plugins, packages, frameworks, languages and now Mac OS come to offer an upgrade. If you &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +74,58 @@ can get anxious easily when running slow Rspec hundreds of time &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/31/upgrading-to-mountain-lion-1/">Upgrading to Mountain Lion(1)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+  
+
+<time datetime="2012-07-31T14:29:00+08:00" pubdate>Jul 31<span>st</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Version upgrading becomes a continuous plain for developers. Plugins, packages, frameworks, languages and now Mac OS come to offer an upgrade. If you wait until your current
+one goes deprecated or unsupported, you may be likely to spend a few times more hours on it. Besides, various dependencies will make any upgrading risky. Fortunately, Mountain Lion
+seems not to get things too messy, but majorly you have to install Xcode 4.4 and reinstall imagmagick and Rmagick if they are used. Only a few steps to go on Mountain Lion:</p>
+
+<ol>
+<li><p>Install Xcode 4.4 from App Store</p></li>
+<li><p>Install Commands Line Tools from Xcode, Preference -> Downloads</p></li>
+<li><p>Install <a href="http://xquartz.macosforge.org/trac/wiki/X112.7.2">XQuartz</a></p></li>
+<li><p>In terminal:</p></li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  brew update
+</span><span class='line'>  brew unlink imagmagick
+</span><span class='line'>  brew install --fresh imagemagick
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It takes a few mintues, but can&#8217;t be simpler to go.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -563,6 +614,10 @@ The same thing is both are awesome and&#8230;having 4 times more legs as we do.<
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/07/31/upgrading-to-mountain-lion-1/">Upgrading to Mountain Lion(1)</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/07/18/rspec-in-turbo-mode-setup-spork-plus-factory-girl-plus-rspec/">Rspec in Turbo Mode: Setup Spork + Factory Girl + Rspec</a>
       </li>
     
@@ -576,10 +631,6 @@ The same thing is both are awesome and&#8230;having 4 times more legs as we do.<
     
       <li class="post">
         <a href="/blog/2012/02/22/play-around-time-range-in-ruby-on-rails/">Play Around Time Range in Ruby on Rails</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2011/11/03/hello-octopress/">Hello Octopress</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Jack comes to code]]></title>
   <link href="http://aquajach.github.com/atom.xml" rel="self"/>
   <link href="http://aquajach.github.com/"/>
-  <updated>2012-07-18T15:41:05+08:00</updated>
+  <updated>2012-07-31T14:52:34+08:00</updated>
   <id>http://aquajach.github.com/</id>
   <author>
     <name><![CDATA[Jack S Y Chen (@aquajach)]]></name>
@@ -12,6 +12,36 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Upgrading to Mountain Lion(1)]]></title>
+    <link href="http://aquajach.github.com/blog/2012/07/31/upgrading-to-mountain-lion-1/"/>
+    <updated>2012-07-31T14:29:00+08:00</updated>
+    <id>http://aquajach.github.com/blog/2012/07/31/upgrading-to-mountain-lion-1</id>
+    <content type="html"><![CDATA[<p>Version upgrading becomes a continuous plain for developers. Plugins, packages, frameworks, languages and now Mac OS come to offer an upgrade. If you wait until your current
+one goes deprecated or unsupported, you may be likely to spend a few times more hours on it. Besides, various dependencies will make any upgrading risky. Fortunately, Mountain Lion
+seems not to get things too messy, but majorly you have to install Xcode 4.4 and reinstall imagmagick and Rmagick if they are used. Only a few steps to go on Mountain Lion:</p>
+
+<ol>
+<li><p>Install Xcode 4.4 from App Store</p></li>
+<li><p>Install Commands Line Tools from Xcode, Preference -> Downloads</p></li>
+<li><p>Install <a href="http://xquartz.macosforge.org/trac/wiki/X112.7.2">XQuartz</a></p></li>
+<li><p>In terminal:</p></li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  brew update
+</span><span class='line'>  brew unlink imagmagick
+</span><span class='line'>  brew install --fresh imagemagick
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It takes a few mintues, but can&#8217;t be simpler to go.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Rspec in Turbo Mode: Setup Spork + Factory Girl + Rspec]]></title>

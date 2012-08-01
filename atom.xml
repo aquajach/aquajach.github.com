@@ -4,7 +4,7 @@
   <title><![CDATA[Jack comes to code]]></title>
   <link href="http://aquajach.github.com/atom.xml" rel="self"/>
   <link href="http://aquajach.github.com/"/>
-  <updated>2012-07-31T14:52:34+08:00</updated>
+  <updated>2012-08-01T22:20:51+08:00</updated>
   <id>http://aquajach.github.com/</id>
   <author>
     <name><![CDATA[Jack S Y Chen (@aquajach)]]></name>
@@ -12,6 +12,74 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Upgrading to Mountain Lion(2)]]></title>
+    <link href="http://aquajach.github.com/blog/2012/08/01/upgrading-to-mountain-lion-2/"/>
+    <updated>2012-08-01T21:48:00+08:00</updated>
+    <id>http://aquajach.github.com/blog/2012/08/01/upgrading-to-mountain-lion-2</id>
+    <content type="html"><![CDATA[<p>With basic fix from <a href="http://ruby.jieck.com/blog/2012/07/31/upgrading-to-mountain-lion-1/">(1)</a> of Mountain Lion for Rails projects, most of application
+should run as well as in Lion. While bad things always happen unexpectedly. When creatig a new rails app, or adding a new ruby version to RVM, some exceptions
+would be like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Installing json <span class="o">(</span>1.7.4<span class="o">)</span> with native extensions
+</span><span class='line'>Gem::Installer::ExtensionBuildError: ERROR: Failed to build gem native extension
+</span><span class='line'>.
+</span><span class='line'>        C:/Programozas/Ruby192/bin/ruby.exe extconf.rb
+</span><span class='line'>creating Makefile
+</span><span class='line'>
+</span><span class='line'>make
+</span><span class='line'><span class="s1">&#39;make&#39;</span> is not recognized as an internal or external <span class="nb">command</span>, operable program or batch file.
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Gem files will remain installed in C:/Programozas/Ruby192/lib/ruby/gems/1.9.1/gems/json-1.7.4 <span class="k">for </span>inspection.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Believe above is one of the gem version using make, which is somehow not defined as the command it should have been. The reasons are you miss GCC 4.2
+(if you are using a ruby version older than 1.9.3) and Apple sets the ownership of /usr/local to root. Commands to go:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; sudo chown -R <span class="sb">`</span>whoami<span class="sb">`</span> /usr/local
+</span><span class='line'>&gt; brew tap homebrew/dupes
+</span><span class='line'>&gt; brew install apple-gcc42
+</span><span class='line'>&gt; sudo ln -s /usr/bin/gcc /usr/bin/gcc-4.2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Unfortunately, now when you install or reinstall a ruby version with RVM, there are still weird errors. Even if many people are happy with work-around
+solutions like:</p>
+
+<p><a href="http://stackoverflow.com/questions/11660673/install-ree-1-8-7-with-rvm-on-mountain-lion">http://stackoverflow.com/questions/11660673/install-ree-1-8-7-with-rvm-on-mountain-lion</a></p>
+
+<p><a href="http://stackoverflow.com/questions/11664835/mountain-lion-rvm-install-1-8-7-x11-error">http://stackoverflow.com/questions/11664835/mountain-lion-rvm-install-1-8-7-x11-error</a></p>
+
+<p>You can try them, but neither work for me. My last approach is to reinstall RVM from (1.10 to 1.14), then rejoice!</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; rvm implode
+</span><span class='line'>&gt; curl -L https://get.rvm.io | bash -s stable
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(You may be unhappy with the last solution, but I guess Mountain Lion users need to do so soon or later)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Upgrading to Mountain Lion(1)]]></title>

@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Why we use Ruby or Rails? - Jack comes to code</title>
+  <title>Upgrading to Mountain Lion(2) - Jack comes to code</title>
   <meta name="author" content="Jack S Y Chen (@aquajach)">
 
   
-  <meta name="description" content="Having been using Ruby and Rails for a few years, recently I find it becomes trendy, even if in Hong Kong, a commercial and finanacial city more &hellip;">
+  <meta name="description" content="With basic fix from (1) of Mountain Lion for Rails projects, most of application
+should run as well as in Lion. While bad things always happen &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://aquajach.github.com/blog/2012/05/31/why-we-use-ruby-or-rails">
+  <link rel="canonical" href="http://aquajach.github.com/blog/2012/08/01/upgrading-to-mountain-lion-2">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -77,7 +78,7 @@
   
   <header>
     
-      <h1 class="entry-title">Why We Use Ruby or Rails?</h1>
+      <h1 class="entry-title">Upgrading to Mountain Lion(2)</h1>
     
     
       <p class="meta">
@@ -88,65 +89,73 @@
 
   
 
-<time datetime="2012-05-31T15:24:00+08:00" pubdate>May 31<span>st</span>, 2012</time>
+<time datetime="2012-08-01T21:48:00+08:00" pubdate>Aug 1<span>st</span>, 2012</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Having been using Ruby and Rails for a few years, recently I find it becomes trendy, even if in Hong Kong, a commercial and finanacial city more people want to build their web application in such a *new language.</p>
+<div class="entry-content"><p>With basic fix from <a href="http://ruby.jieck.com/blog/2012/07/31/upgrading-to-mountain-lion-1/">(1)</a> of Mountain Lion for Rails projects, most of application
+should run as well as in Lion. While bad things always happen unexpectedly. When creatig a new rails app, or adding a new ruby version to RVM, some exceptions
+would be like this:</p>
 
-<p>When being asked why they like Ruby or Rails, their answers among:</p>
-
-<ul>
-<li>It&#8217;s preferred by lots of foreign developers</li>
-<li>Some professors said it is the trend of web development in the future</li>
-<li>PHP is pretty boring</li>
-<li>Twitter&#8217;s built in RoR</li>
-<li>Some of my developers in the team like to try it</li>
-<li>It is cooler</li>
-</ul>
-
-
-<p>Yes, it is cooler to me, but I don&#8217;t think these reasons persuade many people move from another programming lanuage to Ruby. Here I give why I still stick to this language:</p>
-
-<ul>
-<li><strong>Ruby Community</strong></li>
-</ul>
-
-
-<p>I haven&#8217;t seen any programming community as social as Ruby&#8217;s. Github is the most well known project collabration and open source hosting site with a slogan as Social Coding. *Social means developers feel happy to share what they have, to listen what is interesting and even to contribute what they can to make the earth run faster. A stats of lanuages in Github, in which Ruby is the socialest server-side language (guessing every web app needs JavaScript).</p>
-
-<p><img src="/images/languages_in_github.png" title="Lanuages in Github" ></p>
-
-<p>Every year there are different scale Ruby Conferences all around of world and uncountable meetups. Many developers pay themselves for debating with others, giving speaches and helping promote Ruby and its community. Ruby or Rails itself is not faultless or the best of all and even <a href="https://gist.github.com/1978249">can be hacked at some point</a>, but its followers believe things get better everyday as long as the community is well there.</p>
-
-<ul>
-<li><strong>Open Source</strong></li>
-</ul>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Installing json <span class="o">(</span>1.7.4<span class="o">)</span> with native extensions
+</span><span class='line'>Gem::Installer::ExtensionBuildError: ERROR: Failed to build gem native extension
+</span><span class='line'>.
+</span><span class='line'>        C:/Programozas/Ruby192/bin/ruby.exe extconf.rb
+</span><span class='line'>creating Makefile
+</span><span class='line'>
+</span><span class='line'>make
+</span><span class='line'><span class="s1">&#39;make&#39;</span> is not recognized as an internal or external <span class="nb">command</span>, operable program or batch file.
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Gem files will remain installed in C:/Programozas/Ruby192/lib/ruby/gems/1.9.1/gems/json-1.7.4 <span class="k">for </span>inspection.
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Because of the community is strong, there&#8217;re many open source gems or plugins are there. Java programmers probably find Rails projects don&#8217;t need much coding, as all of modules are free to download.</p>
+<p>Believe above is one of the gem version using make, which is somehow not defined as the command it should have been. The reasons are you miss GCC 4.2
+(if you are using a ruby version older than 1.9.3) and Apple sets the ownership of /usr/local to root. Commands to go:</p>
 
-<p>A few year ago, I was in a dinner but it finally turned to be a debate between a Microsoft fan and a Ruby developer. The former working in a governmental institution holded Microsoft or IBM gives full support, which is reliable to large scale projects. While the Ruby guy said giving a google or shouting about an error will fix your problems faster.</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; sudo chown -R <span class="sb">`</span>whoami<span class="sb">`</span> /usr/local
+</span><span class='line'>&gt; brew tap homebrew/dupes
+</span><span class='line'>&gt; brew install apple-gcc42
+</span><span class='line'>&gt; sudo ln -s /usr/bin/gcc /usr/bin/gcc-4.2
+</span></code></pre></td></tr></table></div></figure>
 
-<p>I would stand with Microsoft if it were 7 years ago, but now in the age of Internet, which features/functions you want to build or which errors you come across some people might post them somewhere as public and searchable resource. We definitely wants technical support from all developers on the earth rather than from a single company making you spend a thousand bucks per month.</p>
 
-<ul>
-<li><strong>Launage itself</strong></li>
-</ul>
+<p>Unfortunately, now when you install or reinstall a ruby version with RVM, there are still weird errors. Even if many people are happy with work-around
+solutions like:</p>
+
+<p><a href="http://stackoverflow.com/questions/11660673/install-ree-1-8-7-with-rvm-on-mountain-lion">http://stackoverflow.com/questions/11660673/install-ree-1-8-7-with-rvm-on-mountain-lion</a></p>
+
+<p><a href="http://stackoverflow.com/questions/11664835/mountain-lion-rvm-install-1-8-7-x11-error">http://stackoverflow.com/questions/11664835/mountain-lion-rvm-install-1-8-7-x11-error</a></p>
+
+<p>You can try them, but neither work for me. My last approach is to reinstall RVM from (1.10 to 1.14), then rejoice!</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>&gt; rvm implode
+</span><span class='line'>&gt; curl -L https://get.rvm.io | bash -s stable
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Here I&#8217;d like to save thousands of words, as there are many posts give much praise to it.</p>
-
-<p><a href="http://www.linuxjournal.com/article/5915">http://www.linuxjournal.com/article/5915</a> <a href="https://www.google.com.hk/search?q=ruby+advantages&amp;oq=ruby+advantages">See More</a></p>
-
-<p>People are saying Ruby is good, but everyone involved needs to know why.</p>
-
-<p>Still remmeber in the last Red Dot Ruby Conf, <a href="http://www.twitter.com/nzkoz">@nzkoz</a> (one of Rails core team) complained about how many pull requests and emails he sees every morning, which makes him feel like this:</p>
-
-<p><img src="/images/ruby_community.jpg" title="Rubiests are coming to burn my house everyday" ></p>
+<p>(You may be unhappy with the last solution, but I guess Mountain Lion users need to do so soon or later)</p>
 </div>
 
 
@@ -164,7 +173,7 @@
 
   
 
-<time datetime="2012-05-31T15:24:00+08:00" pubdate>May 31<span>st</span>, 2012</time>
+<time datetime="2012-08-01T21:48:00+08:00" pubdate>Aug 1<span>st</span>, 2012</time>
       
 
 
@@ -172,7 +181,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://aquajach.github.com/blog/2012/05/31/why-we-use-ruby-or-rails/" data-via="aquajach" data-counturl="http://aquajach.github.com/blog/2012/05/31/why-we-use-ruby-or-rails/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://aquajach.github.com/blog/2012/08/01/upgrading-to-mountain-lion-2/" data-via="aquajach" data-counturl="http://aquajach.github.com/blog/2012/08/01/upgrading-to-mountain-lion-2/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -185,10 +194,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/05/20/singapore-red-dot-ruby-conf-gui-lai/" title="Previous Post: Coming back from Singapore Red Dot Ruby Conf">&laquo; Coming back from Singapore Red Dot Ruby Conf</a>
+        <a class="basic-alignment left" href="/blog/2012/07/31/upgrading-to-mountain-lion-1/" title="Previous Post: Upgrading to Mountain Lion(1)">&laquo; Upgrading to Mountain Lion(1)</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/07/18/rspec-in-turbo-mode-setup-spork-plus-factory-girl-plus-rspec/" title="next Post: Rspec in Turbo Mode: Setup Spork + Factory Girl + Rspec">Rspec in Turbo Mode: Setup Spork + Factory Girl + Rspec &raquo;</a>
       
     </p>
   </footer>

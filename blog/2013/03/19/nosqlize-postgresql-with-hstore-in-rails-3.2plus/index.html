@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>'NoSqlize' PostgreSql with HSTORE in Rails (3.2+) - Jack comes to code</title>
+  <meta name="author" content="Jack S Y Chen (@aquajach)">
+
+  
+  <meta name="description" content="Many people asked why Mac OSX, Rails and Heroku prefer PostgreSql to MySql. This post is talking about one of its outstanding features: hstore One &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://aquajach.github.com/blog/2013/03/19/nosqlize-postgresql-with-hstore-in-rails-3.2plus">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Jack comes to code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32267248-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jack comes to code</a></h1>
+  
+    <h2>Ruby / Rails / Sinatra / APIs</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:aquajach.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">'NoSqlize' PostgreSql With HSTORE in Rails (3.2+)</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+  
+
+<time datetime="2013-03-19T11:55:00+08:00" pubdate>Mar 19<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Many people asked why Mac OSX, Rails and Heroku prefer PostgreSql to MySql. This post is talking about one of its outstanding features: <a href="http://www.postgresql.org/docs/9.2/static/hstore.html">hstore</a></p>
+
+<p>One year ago, Ryan Bates&#8217;s <a href="http://railscasts.com/episodes/345-hstore">post</a> had introduced hstore, but there are a few updates for Rails 3.2. If you did not know what hstore is, this
+is its usage in Rails:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:interests</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="n">male</span><span class="p">:</span> <span class="kp">false</span><span class="p">,</span> <span class="n">femal</span><span class="p">:</span> <span class="kp">false</span><span class="p">,</span> <span class="n">it_is_my_little_secret</span><span class="p">:</span> <span class="kp">true</span><span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It&#8217;s easy to find there are json-like key/value pairs in the example above. It&#8217;s more awesome that the key <em>it_is_my_littler_secret</em> is dynamic, which can be customized
+by front end users. Let&#8217;s see how it could happen with Rails now:</p>
+
+<p><strong> Get Started </strong></p>
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;activerecord-postgres-hstore&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>config/application.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">active_record</span><span class="o">.</span><span class="n">schema_format</span> <span class="o">=</span> <span class="ss">:sql</span> <span class="c1">#As the schema for hstore can&#39;t be represented by ruby</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Terminal</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rails g hstore:setup <span class="c"># Run &#39;CREATE EXTENSION IF NOT EXISTS hstore&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Migration File</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">add_column</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:interests</span><span class="p">,</span> <span class="ss">:hstore</span>
+</span><span class='line'><span class="n">execute</span> <span class="s1">&#39;CREATE INDEX users_interests ON users USING GIN(interests)&#39;</span>  <span class="c1">#Index on the hstore field</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>Termial</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rake db:migrate
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The basic setup is done, now we are looking into how to use hstore in Rails&#8217; MVC framework:</p>
+
+<p><strong> Usage in Rails </strong></p>
+
+<figure class='code'><figcaption><span>app/models/user.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="n">attr_accessible</span> <span class="ss">:interests</span> <span class="c1">#To make sure interests is not mass assignment protected</span>
+</span><span class='line'>  <span class="n">store_accessor</span> <span class="ss">:interests</span><span class="p">,</span> <span class="sx">%w{male, female}</span> <span class="c1">#Put any default keys showing in html forms</span>
+</span><span class='line'>  <span class="n">serialize</span> <span class="ss">:interests</span><span class="p">,</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Coders</span><span class="o">::</span><span class="no">Hstore</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>app/views/users/edit.html.haml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="o">=</span><span class="n">form_for</span> <span class="vi">@user</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+</span><span class='line'>   <span class="o">.</span><span class="n">row</span>
+</span><span class='line'>    <span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">label</span> <span class="ss">:male</span>
+</span><span class='line'>    <span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">check_box</span> <span class="ss">:male</span>
+</span><span class='line'>   <span class="o">.</span><span class="n">row</span>
+</span><span class='line'>    <span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">label</span> <span class="ss">:female</span>
+</span><span class='line'>    <span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">check_box</span> <span class="ss">:female</span>
+</span><span class='line'>   <span class="o">.</span><span class="n">row</span>
+</span><span class='line'>    <span class="o">=</span><span class="n">label</span> <span class="ss">:new_key</span><span class="p">,</span> <span class="s2">&quot;Other&quot;</span>
+</span><span class='line'>    <span class="o">=</span><span class="n">text_field</span> <span class="ss">:interests</span><span class="p">,</span> <span class="ss">:new_key</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>app/controllers/users_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">update</span>
+</span><span class='line'>  <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="vi">@user</span><span class="o">.</span><span class="n">update_attributes</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">params</span><span class="o">[</span><span class="ss">:interests</span><span class="o">].</span><span class="n">present?</span> <span class="ow">and</span> <span class="n">params</span><span class="o">[</span><span class="ss">:interests</span><span class="o">][</span><span class="ss">:new_key</span><span class="o">].</span><span class="n">present?</span>
+</span><span class='line'>      <span class="vi">@user</span><span class="o">.</span><span class="n">interests</span> <span class="o">=</span> <span class="vi">@user</span><span class="o">.</span><span class="n">interests</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:interests</span><span class="o">][</span><span class="ss">:new_key</span><span class="o">]</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span> <span class="c1">#Add the new key to the interests</span>
+</span><span class='line'>      <span class="vi">@user</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">render</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">some_path_with_success_message</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="n">render</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">some_path_with_fail_message</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Yeah, that&#8217;s it. You could be more flexible by not fixing any keys for the hstore field.</p>
+
+<p>Querying hstore fields is not pain at all, here&#8217;s the <a href="http://www.postgresql.org/docs/9.2/static/hstore.html#AEN140247">full list of hstore operations</a></p>
+
+<p>Wana comment or punch on the post?
+<a href="https://twitter.com/intent/tweet?screen_name=aquajach" class="twitter-mention-button" data-related="aquajach">Tweet to @aquajach</a></p>
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jack S Y Chen (@aquajach)</span></span>
+
+      
+
+
+
+
+  
+
+<time datetime="2013-03-19T11:55:00+08:00" pubdate>Mar 19<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://aquajach.github.com/blog/2013/03/19/nosqlize-postgresql-with-hstore-in-rails-3.2plus/" data-via="aquajach" data-counturl="http://aquajach.github.com/blog/2013/03/19/nosqlize-postgresql-with-hstore-in-rails-3.2plus/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/08/01/upgrading-to-mountain-lion-2/" title="Previous Post: Upgrading to Mountain Lion(2)">&laquo; Upgrading to Mountain Lion(2)</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/03/19/nosqlize-postgresql-with-hstore-in-rails-3.2plus/">'NoSqlize' PostgreSql with HSTORE in Rails (3.2+)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/08/01/upgrading-to-mountain-lion-2/">Upgrading to Mountain Lion(2)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/31/upgrading-to-mountain-lion-1/">Upgrading to Mountain Lion(1)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/07/18/rspec-in-turbo-mode-setup-spork-plus-factory-girl-plus-rspec/">Rspec in Turbo Mode: Setup Spork + Factory Girl + Rspec</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/05/31/why-we-use-ruby-or-rails/">Why we use Ruby or Rails?</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("aquajach", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/aquajach" class="twitter-follow-button" data-width="208px" data-show-count="false">Follow @aquajach</a>
+  
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Jack S Y Chen (@aquajach) -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
